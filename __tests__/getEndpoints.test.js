@@ -25,4 +25,15 @@ describe("GET endpoints", () => {
         });
     });
   });
+  describe("CORE: GET /api", () => {
+    test("200: responds with object that matches local enspoints JSON", () => {
+      const endpointsJson = require("../endpoints.json");
+      return request(app)
+        .get("/api")
+        .expect(200)
+        .then((endpoints) => {
+          expect(endpoints.body).toEqual(endpointsJson);
+        });
+    });
+  });
 });
