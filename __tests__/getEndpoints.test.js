@@ -12,11 +12,12 @@ describe("GET endpoints", () => {
     test("200: responds with a 200", () => {
       return request(app).get("/api/topics").expect(200);
     });
-    test("200: responds with array of topic objects with correct properties", () => {
+    test("200: responds with array of topic objects with correct properties and length", () => {
       return request(app)
         .get("/api/topics")
         .expect(200)
         .then((res) => {
+          expect(res.body.topics.length).toBe(3);
           res.body.topics.forEach((topic) => {
             expect(topic).toHaveProperty("slug", expect.any(String));
             expect(topic).toHaveProperty("description", expect.any(String));
