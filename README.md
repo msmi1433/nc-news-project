@@ -1,3 +1,3 @@
-# Northcoders News API
+# Setup
 
-For instructions, please head over to [L2C NC News](https://l2c.northcoders.com/courses/be/nc-news).
+You will need to create environment variables (.env) for the test and development databases in order to connect to them.
