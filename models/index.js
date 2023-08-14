@@ -1,3 +1,4 @@
 const { selectAllTopics } = require("./topics.model");
+const { selectArticleByID } = require("./articles.model");
 
-module.exports = { selectAllTopics };
+module.exports = { selectAllTopics, selectArticleByID };
