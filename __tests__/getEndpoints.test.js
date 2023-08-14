@@ -36,4 +36,52 @@ describe("GET endpoints", () => {
         });
     });
   });
+  describe("GET /api/articles/:article_id", () => {
+    test("200: responds with one article object with correct keys", () => {
+      const desiredKeyArray = [
+        "title",
+        "topic",
+        "author",
+        "body",
+        "created_at",
+        "article_img_url",
+      ];
+      return request(app)
+        .get("/api/articles/2")
+        .expect(200)
+        .then((res) => {
+          expect(typeof res.body.article).toBe("object");
+          expect(Array.isArray(res.body.article)).toBe(false);
+          const hasDesiredKeys = desiredKeyArray.every((key) =>
+            res.body.article.hasOwnProperty(key)
+          );
+          expect(hasDesiredKeys).toBe(true);
+        });
+    });
+    test("200: responds with correct article based on id given", () => {
+      return request(app)
+        .get("/api/articles/2")
+        .expect(200)
+        .then((res) => {
+          expect(res.body.article.article_id).toBe(2);
+          expect(res.body.article.title).toBe("Sony Vaio; or, The Laptop");
+        });
+    });
+    test("400: responds with a 400 and err message when input article_id is not a number", () => {
+      return request(app)
+        .get("/api/articles/dog")
+        .expect(400)
+        .then((res) => {
+          expect(res.body.msg).toBe("invalid parameter");
+        });
+    });
+    test("404: errors when article_id provided is a number, but does not exist in db", () => {
+      return request(app)
+        .get("/api/articles/56893")
+        .expect(404)
+        .then((res) => {
+          expect(res.body.msg).toBe("article_id does not exist");
+        });
+    });
+  });
 });
