@@ -13,7 +13,7 @@ exports.getArticleByID = (req, res, next) => {
 
 exports.getArticles = (req, res, next) => {
   selectArticles()
-    .then(({ rows: articles }) => {
+    .then((articles) => {
       res.status(200).send({ articles });
     })
     .catch((err) => {
