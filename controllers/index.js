@@ -1,6 +1,6 @@
 const { getTopics } = require("./topics.controller");
 const { getEndpoints } = require("./endpoints.controller");
-const { getArticleByID } = require("./articles.controller");
+const { getArticleByID, getArticles } = require("./articles.controller");
 const {
   psqlErrorHandler,
   customErrorHandler,
@@ -12,4 +12,5 @@ module.exports = {
   getArticleByID,
   psqlErrorHandler,
   customErrorHandler,
+  getArticles,
 };
