@@ -11,7 +11,7 @@ exports.insertComment = (author, body, article_id) => {
     [[body, article_id, author, 0]]
   );
   return db.query(insertQuery);
-
+};
 
 exports.selectCommentsByArticleID = (articleID) => {
   return db
@@ -23,5 +23,4 @@ exports.selectCommentsByArticleID = (articleID) => {
     .then(({ rows }) => {
       return rows;
     });
-
 };

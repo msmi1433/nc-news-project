@@ -11,7 +11,6 @@ const {
   postCommentToArticleID,
 
   getCommentsByArticleID,
-
 } = require("./controllers");
 
 app.use(express.json());
@@ -24,11 +23,9 @@ app.get("/api/articles", getArticles);
 
 app.get("/api/articles/:article_id", getArticleByID);
 
-
 app.post("/api/articles/:article_id/comments", postCommentToArticleID);
 
 app.get("/api/articles/:article_id/comments", getCommentsByArticleID);
-
 
 app.use(psqlErrorHandler);
 
