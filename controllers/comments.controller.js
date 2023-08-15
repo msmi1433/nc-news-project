@@ -1,3 +1,19 @@
+
+const { selectArticleByID } = require("../models");
+const { insertComment } = require("../models");
+
+exports.postCommentToArticleID = (req, res, next) => {
+  const { article_id } = req.params;
+  const { username, body } = req.body;
+
+  selectArticleByID(article_id)
+    .then(() => {
+      return insertComment(username, body, article_id);
+    })
+    .then(({ rows }) => {
+      const comment = rows[0];
+      res.status(201).send({ comment });
+
 const { selectCommentsByArticleID } = require("../models");
 const { selectArticleByID } = require("../models");
 
@@ -10,6 +26,7 @@ exports.getCommentsByArticleID = (req, res, next) => {
     })
     .then((comments) => {
       res.status(200).send({ comments });
+
     })
     .catch((err) => {
       next(err);
