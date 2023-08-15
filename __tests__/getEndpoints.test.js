@@ -126,4 +126,62 @@ describe("GET endpoints", () => {
         });
     });
   });
+  describe("GET /api/articles/:article_id/comments", () => {
+    test("200: responds with array of comment objects of correct length", () => {
+      return request(app)
+        .get("/api/articles/9/comments")
+        .expect(200)
+        .then(({ body }) => {
+          const { comments } = body;
+          expect(comments.length).toBe(2);
+        });
+    });
+    test("200: returned comment object(s) have correct properties", () => {
+      return request(app)
+        .get("/api/articles/9/comments")
+        .expect(200)
+        .then(({ body }) => {
+          const { comments } = body;
+          comments.forEach((comment) => {
+            expect(comment).toEqual(
+              expect.objectContaining({
+                comment_id: expect.any(Number),
+                votes: expect.any(Number),
+                created_at: expect.any(String),
+                author: expect.any(String),
+                body: expect.any(String),
+                article_id: expect.any(Number),
+              })
+            );
+          });
+        });
+    });
+    test("200: comments are ordered by created_at (DESC)", () => {
+      return request(app)
+        .get("/api/articles/1/comments")
+        .expect(200)
+        .then(({ body }) => {
+          const { comments } = body;
+          expect(comments).toBeSortedBy("created_at", { descending: true });
+        });
+    });
+    test("404: article does not exist", () => {
+      return request(app)
+        .get("/api/articles/300/comments")
+        .expect(404)
+        .then(({ body }) => {
+          const { msg } = body;
+          expect(msg).toBe("article_id does not exist");
+        });
+    });
+    test("200: returns empty array for articles with no comments", () => {
+      return request(app)
+        .get("/api/articles/11/comments")
+        .expect(200)
+        .then(({ body }) => {
+          const { comments } = body;
+          expect(comments).toEqual([]);
+        });
+    });
+  });
 });
