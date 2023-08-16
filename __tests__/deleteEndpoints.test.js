@@ -29,7 +29,7 @@ describe("DELETE endpoints", () => {
           expect(body.msg).toBe("parameter does not exist");
         });
     });
-    test("404: errors when comment_id does not exist", () => {
+    test("400: errors when comment_id is not valid", () => {
       return request(app)
         .delete("/api/comments/hello")
         .expect(400)
