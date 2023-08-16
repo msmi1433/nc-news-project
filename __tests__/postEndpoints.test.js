@@ -98,7 +98,7 @@ describe("POST endpoints", () => {
         .send(newComment)
         .expect(404)
         .then(({ body }) => {
-          expect(body.msg).toBe("user does not exist");
+          expect(body.msg).toBe("parameter does not exist");
         });
     });
   });

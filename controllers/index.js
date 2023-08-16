@@ -10,9 +10,11 @@ const {
   customErrorHandler,
 } = require("./error-handlers.controller");
 
-const { postCommentToArticleID } = require("./comments.controller");
-
-const { getCommentsByArticleID } = require("./comments.controller");
+const {
+  postCommentToArticleID,
+  getCommentsByArticleID,
+  deleteCommentByID,
+} = require("./comments.controller");
 
 module.exports = {
   getTopics,
@@ -24,4 +26,5 @@ module.exports = {
   postCommentToArticleID,
   getCommentsByArticleID,
   patchArticleByID,
+  deleteCommentByID,
 };
