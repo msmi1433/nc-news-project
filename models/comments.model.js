@@ -24,3 +24,13 @@ exports.selectCommentsByArticleID = (articleID) => {
       return rows;
     });
 };
+
+exports.removeComment = (commentID) => {
+  return db
+    .query("DELETE FROM comments WHERE comment_id = $1 RETURNING *;", [
+      commentID,
+    ])
+    .then(({ rows }) => {
+      return rows[0];
+    });
+};

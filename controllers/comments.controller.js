@@ -1,6 +1,9 @@
-const { selectArticleByID } = require("../models");
-const { insertComment } = require("../models");
-const { selectCommentsByArticleID } = require("../models");
+const {
+  selectArticleByID,
+  selectCommentsByArticleID,
+  insertComment,
+  removeComment,
+} = require("../models");
 
 exports.postCommentToArticleID = (req, res, next) => {
   const { article_id } = req.params;
@@ -28,6 +31,24 @@ exports.getCommentsByArticleID = (req, res, next) => {
     })
     .then((comments) => {
       res.status(200).send({ comments });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.deleteCommentByID = (req, res, next) => {
+  const { comment_id } = req.params;
+  removeComment(comment_id)
+    .then((deletedComment) => {
+      if (deletedComment) {
+        res.status(204).send();
+      } else {
+        return Promise.reject({
+          status: 404,
+          msg: "parameter does not exist",
+        });
+      }
     })
     .catch((err) => {
       next(err);

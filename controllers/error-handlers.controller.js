@@ -4,7 +4,7 @@ exports.psqlErrorHandler = (err, req, res, next) => {
   } else if (err.code === "23502") {
     res.status(400).send({ msg: "posted item format is invalid" });
   } else if (err.code === "23503") {
-    res.status(404).send({ msg: "user does not exist" });
+    res.status(404).send({ msg: "parameter does not exist" });
   } else {
     next(err);
   }

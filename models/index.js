@@ -4,8 +4,11 @@ const {
   selectArticles,
   alterArticleVotes,
 } = require("./articles.model");
-const { insertComment } = require("./comments.model");
-const { selectCommentsByArticleID } = require("./comments.model");
+const {
+  insertComment,
+  selectCommentsByArticleID,
+  removeComment,
+} = require("./comments.model");
 
 module.exports = {
   selectAllTopics,
@@ -14,4 +17,5 @@ module.exports = {
   insertComment,
   selectCommentsByArticleID,
   alterArticleVotes,
+  removeComment,
 };
