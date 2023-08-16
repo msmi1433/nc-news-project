@@ -72,7 +72,7 @@ describe("GET endpoints", () => {
         .get("/api/articles/dog")
         .expect(400)
         .then((res) => {
-          expect(res.body.msg).toBe("invalid parameter");
+          expect(res.body.msg).toBe("invalid data-type");
         });
     });
     test("404: errors when article_id provided is a number, but does not exist in db", () => {

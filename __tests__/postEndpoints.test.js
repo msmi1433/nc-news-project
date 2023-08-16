@@ -52,7 +52,7 @@ describe("POST endpoints", () => {
         .send(newComment)
         .expect(400)
         .then(({ body }) => {
-          expect(body.msg).toBe("invalid parameter");
+          expect(body.msg).toBe("invalid data-type");
         });
     });
     test("400: errors when posted comment object is not complete", () => {
