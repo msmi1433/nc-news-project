@@ -11,6 +11,7 @@ const {
   getCommentsByArticleID,
   patchArticleByID,
   deleteCommentByID,
+  getUsers,
 } = require("./controllers");
 
 app.use(express.json());
@@ -22,6 +23,8 @@ app.get("/api", getEndpoints);
 app.get("/api/articles", getArticles);
 
 app.get("/api/articles/:article_id", getArticleByID);
+
+app.get("/api/users", getUsers);
 
 app.post("/api/articles/:article_id/comments", postCommentToArticleID);
 
