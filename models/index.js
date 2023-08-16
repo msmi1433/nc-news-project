@@ -9,6 +9,7 @@ const {
   selectCommentsByArticleID,
   removeComment,
 } = require("./comments.model");
+const { selectUsers } = require("./users.model");
 
 module.exports = {
   selectAllTopics,
@@ -18,4 +19,5 @@ module.exports = {
   selectCommentsByArticleID,
   alterArticleVotes,
   removeComment,
+  selectUsers,
 };

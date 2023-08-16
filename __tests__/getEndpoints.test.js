@@ -184,4 +184,19 @@ describe("GET endpoints", () => {
         });
     });
   });
+  describe("GET /api/users", () => {
+    test("200: returns an array of all correctly formed user objects", () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.users.length).toBe(4);
+          body.users.forEach((user) => {
+            expect(user).toHaveProperty("username", expect.any(String));
+            expect(user).toHaveProperty("name", expect.any(String));
+            expect(user).toHaveProperty("avatar_url", expect.any(String));
+          });
+        });
+    });
+  });
 });

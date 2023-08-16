@@ -9,12 +9,12 @@ const {
   psqlErrorHandler,
   customErrorHandler,
 } = require("./error-handlers.controller");
-
 const {
   postCommentToArticleID,
   getCommentsByArticleID,
   deleteCommentByID,
 } = require("./comments.controller");
+const { getUsers } = require("./users.controller");
 
 module.exports = {
   getTopics,
@@ -27,4 +27,5 @@ module.exports = {
   getCommentsByArticleID,
   patchArticleByID,
   deleteCommentByID,
+  getUsers,
 };
