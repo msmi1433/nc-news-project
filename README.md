@@ -1,8 +1,8 @@
 # MSMI-News - README
 
-Welcome to MSMI-News! This project provides an API for a news app that can be used to server articles to the end user.
+Welcome to MSMI-News! This project provides an API for a news app that can be used to serve articles to the end user.
 
-The database consists of articles, comments, topics and users. This data can be requested by users and certain endpoints can be queried, as is detailed in the endpoints.json file, or at https://msmi-news.onrender.com/api/.
+The database consists of articles, comments, topics and users. This data can be requested by users, and certain endpoints can be queried as is detailed in the endpoints.json file, or at https://msmi-news.onrender.com/api/.
 
 ## Hosted database
 
