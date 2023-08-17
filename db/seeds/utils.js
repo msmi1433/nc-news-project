@@ -1,3 +1,5 @@
+const db = require("../connection");
+
 exports.convertTimestampToDate = ({ created_at, ...otherProperties }) => {
   if (!created_at) return { ...otherProperties };
   return { created_at: new Date(created_at), ...otherProperties };
@@ -19,4 +21,17 @@ exports.formatComments = (comments, idLookup) => {
       ...this.convertTimestampToDate(restOfComment),
     };
   });
+};
+
+exports.checkTopicExists = (topic) => {
+  return db
+    .query("SELECT * FROM topics WHERE slug = $1", [topic])
+    .then(({ rows }) => {
+      if (!rows.length) {
+        return Promise.reject({
+          status: 404,
+          msg: "topic does not exist",
+        });
+      }
+    });
 };
