@@ -13,6 +13,7 @@ const {
   postCommentToArticleID,
   getCommentsByArticleID,
   deleteCommentByID,
+  patchCommentByID,
 } = require("./comments.controller");
 const { getUsers, getUserByUsername } = require("./users.controller");
 
@@ -29,4 +30,5 @@ module.exports = {
   deleteCommentByID,
   getUsers,
   getUserByUsername,
+  patchCommentByID,
 };

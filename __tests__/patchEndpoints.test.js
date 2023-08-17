@@ -100,4 +100,60 @@ describe("PATCH endpoints", () => {
         });
     });
   });
+  describe("PATCH /api/comments/:comment_id", () => {
+    test("200: responds with updated comment", () => {
+      const newVotes = { inc_votes: 30 };
+      return request(app)
+        .patch("/api/comments/3")
+        .send(newVotes)
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.updatedComment).toEqual({
+            comment_id: 3,
+            body: "Replacing the quiet elegance of the dark suit and tie with the casual indifference of these muted earth tones is a form of fashion suicide, but, uh, call me crazy — onyou it works.",
+            votes: 130,
+            author: "icellusedkars",
+            article_id: 1,
+            created_at: "2020-03-01T01:13:00.000Z",
+          });
+        });
+    });
+    test("400: errors when sent object is not valid", () => {
+      const newVotes = { inc_votes: "hello" };
+      return request(app)
+        .patch("/api/comments/3")
+        .send(newVotes)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("invalid data-type");
+        });
+    });
+    test("404: errors when comment_id does not exist", () => {
+      const newVotes = { inc_votes: 500 };
+      return request(app)
+        .patch("/api/comments/5934838")
+        .send(newVotes)
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("comment_id does not exist");
+        });
+    });
+  });
+  test("200: decrements votes when negative int sent in", () => {
+    const newVotes = { inc_votes: -10 };
+    return request(app)
+      .patch("/api/comments/3")
+      .send(newVotes)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.updatedComment).toEqual({
+          comment_id: 3,
+          body: "Replacing the quiet elegance of the dark suit and tie with the casual indifference of these muted earth tones is a form of fashion suicide, but, uh, call me crazy — onyou it works.",
+          votes: 90,
+          author: "icellusedkars",
+          article_id: 1,
+          created_at: "2020-03-01T01:13:00.000Z",
+        });
+      });
+  });
 });

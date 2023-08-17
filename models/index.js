@@ -8,6 +8,7 @@ const {
   insertComment,
   selectCommentsByArticleID,
   removeComment,
+  alterCommentVotes,
 } = require("./comments.model");
 const { selectUsers, selectUserByUsername } = require("./users.model");
 
@@ -21,4 +22,5 @@ module.exports = {
   removeComment,
   selectUsers,
   selectUserByUsername,
+  alterCommentVotes,
 };
