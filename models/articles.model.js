@@ -51,21 +51,15 @@ LEFT JOIN comments ON articles.article_id = comments.article_id`;
 
   let queryArray = [];
   if (topic) {
-    return checkTopicExists(topic).then(() => {
-      queryString += ` WHERE topic = $1`;
-      queryArray.push(topic);
-      queryString += ` GROUP BY articles.article_id ORDER BY ${sortBy} ${order}`;
-      return db.query(queryString, queryArray).then(({ rows }) => {
-        return rows;
-      });
-    });
-  } else {
-    queryString += ` GROUP BY articles.article_id ORDER BY ${sortBy} ${order}`;
-
-    return db.query(queryString, queryArray).then(({ rows }) => {
-      return rows;
-    });
+    queryString += ` WHERE topic = $1`;
+    queryArray.push(topic);
   }
+
+  queryString += ` GROUP BY articles.article_id ORDER BY ${sortBy} ${order}`;
+
+  return db.query(queryString, queryArray).then(({ rows }) => {
+    return rows;
+  });
 };
 
 exports.alterArticleVotes = (articleID, incVotes) => {

@@ -1,3 +1,4 @@
+const { checkTopicExists } = require("../db/seeds/utils");
 const {
   selectArticleByID,
   selectArticles,
@@ -18,13 +19,25 @@ exports.getArticleByID = (req, res, next) => {
 exports.getArticles = (req, res, next) => {
   const { topic, sort_by, order } = req.query;
 
-  selectArticles(topic, sort_by, order)
-    .then((articles) => {
-      res.status(200).send({ articles });
+  const promises = [selectArticles(topic, sort_by, order)];
+
+  if (topic) promises.push(checkTopicExists(topic));
+
+  return Promise.all(promises)
+    .then((promises) => {
+      res.status(200).send({ articles: promises[0] });
     })
     .catch((err) => {
       next(err);
     });
+
+  // selectArticles(topic, sort_by, order)
+  //   .then((articles) => {
+  //     res.status(200).send({ articles });
+  //   })
+  //   .catch((err) => {
+  //     next(err);
+  //   });
 };
 
 exports.patchArticleByID = (req, res, next) => {

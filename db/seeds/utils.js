@@ -33,5 +33,6 @@ exports.checkTopicExists = (topic) => {
           msg: "topic does not exist",
         });
       }
+      return rows;
     });
 };
