@@ -174,7 +174,7 @@ describe("GET endpoints", () => {
     });
     test("200: returns empty array when given topic with no articles", () => {
       return request(app)
-        .get("/api/articles?topic=myles")
+        .get("/api/articles?topic=paper")
         .expect(200)
         .then(({ body }) => {
           expect(body.articles).toEqual([]);
@@ -194,6 +194,14 @@ describe("GET endpoints", () => {
         .expect(400)
         .then(({ body }) => {
           expect(body.msg).toBe("invalid order query");
+        });
+    });
+    test("404: errors when given topic that does not exist", () => {
+      return request(app)
+        .get("/api/articles?topic=myles")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("topic does not exist");
         });
     });
   });
