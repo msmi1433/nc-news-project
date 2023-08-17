@@ -20,7 +20,10 @@ For details regarding what these dependencies are, please refer to the package.j
 
 ### Seeding the database
 
-To seed the database, execute the `npm run seed` script in the terminal.
+To seed the database, execute the following scripts in the terminal:
+
+1. `npm run setup-dbs`
+2. `npm run seed`
 
 ## Running tests
 
