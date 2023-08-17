@@ -39,12 +39,14 @@ describe("GET endpoints", () => {
   describe("GET /api/articles/:article_id", () => {
     test("200: responds with one article object with correct keys", () => {
       const desiredKeyArray = [
+        "article_id",
         "title",
         "topic",
         "author",
         "body",
         "created_at",
         "article_img_url",
+        "comment_count",
       ];
       return request(app)
         .get("/api/articles/2")
@@ -65,6 +67,14 @@ describe("GET endpoints", () => {
         .then((res) => {
           expect(res.body.article.article_id).toBe(2);
           expect(res.body.article.title).toBe("Sony Vaio; or, The Laptop");
+        });
+    });
+    test("200: responds with correct comment count for given article", () => {
+      return request(app)
+        .get("/api/articles/2")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.article.comment_count).toBe(0);
         });
     });
     test("400: responds with a 400 and err message when input article_id is not a number", () => {
