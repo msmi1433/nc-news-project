@@ -172,7 +172,7 @@ describe("GET endpoints", () => {
           });
       });
     });
-    test("200: returns empty array when given non-existent topic", () => {
+    test("200: returns empty array when given topic with no articles", () => {
       return request(app)
         .get("/api/articles?topic=myles")
         .expect(200)
@@ -188,14 +188,14 @@ describe("GET endpoints", () => {
           expect(body.msg).toBe("invalid sort_by query");
         });
     });
-  });
-  test("400: errors when given non-greenlisted order", () => {
-    return request(app)
-      .get("/api/articles?order=drop")
-      .expect(400)
-      .then(({ body }) => {
-        expect(body.msg).toBe("invalid order query");
-      });
+    test("400: errors when given non-greenlisted order", () => {
+      return request(app)
+        .get("/api/articles?order=drop")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("invalid order query");
+        });
+    });
   });
   describe("GET /api/articles/:article_id/comments", () => {
     test("200: responds with array of comment objects of correct length", () => {
