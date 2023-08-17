@@ -9,7 +9,7 @@ const {
   selectCommentsByArticleID,
   removeComment,
 } = require("./comments.model");
-const { selectUsers } = require("./users.model");
+const { selectUsers, selectUserByUsername } = require("./users.model");
 
 module.exports = {
   selectAllTopics,
@@ -20,4 +20,5 @@ module.exports = {
   alterArticleVotes,
   removeComment,
   selectUsers,
+  selectUserByUsername,
 };

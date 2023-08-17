@@ -288,4 +288,27 @@ describe("GET endpoints", () => {
         });
     });
   });
+  describe("GET /api/users/:username", () => {
+    test("200: returns correct user object based on params", () => {
+      return request(app)
+        .get("/api/users/icellusedkars")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.user).toEqual({
+            username: "icellusedkars",
+            name: "sam",
+            avatar_url:
+              "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4",
+          });
+        });
+    });
+    test("404: errors when user does not exist", () => {
+      return request(app)
+        .get("/api/users/myles")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("username does not exist");
+        });
+    });
+  });
 });
