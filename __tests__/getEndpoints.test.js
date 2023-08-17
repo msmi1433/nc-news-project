@@ -125,6 +125,77 @@ describe("GET endpoints", () => {
           expect(articles).toBeSortedBy("created_at", { descending: true });
         });
     });
+    describe("Queries", () => {
+      test("200: articles can be filtered by existing TOPIC", () => {
+        return request(app)
+          .get("/api/articles?topic=mitch")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.articles.length).toBe(12);
+            body.articles.forEach((article) => {
+              expect(article.topic).toBe("mitch");
+            });
+          });
+      });
+      test("200: articles can be sorted by allowed fields", () => {
+        return request(app)
+          .get("/api/articles?sort_by=comment_count")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.articles).toBeSortedBy("comment_count", {
+              descending: true,
+            });
+          });
+      });
+      test("200: articles are ordered by defined order", () => {
+        return request(app)
+          .get("/api/articles?order=ASC")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.articles).toBeSortedBy("created_at", {
+              ascending: true,
+            });
+          });
+      });
+      test("200: accepts multiple valid queries at once", () => {
+        return request(app)
+          .get("/api/articles?topic=mitch&sort_by=comment_count&order=ASC")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.articles.length).toBe(12);
+            expect(body.articles).toBeSortedBy("comment_count", {
+              ascending: true,
+            });
+            body.articles.forEach((article) => {
+              expect(article.topic).toBe("mitch");
+            });
+          });
+      });
+    });
+    test("200: returns empty array when given non-existent topic", () => {
+      return request(app)
+        .get("/api/articles?topic=myles")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.articles).toEqual([]);
+        });
+    });
+    test("400: errors when given non-greenlisted sort_by", () => {
+      return request(app)
+        .get("/api/articles?sort_by=author")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("invalid sort_by query");
+        });
+    });
+  });
+  test("400: errors when given non-greenlisted order", () => {
+    return request(app)
+      .get("/api/articles?order=drop")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("invalid order query");
+      });
   });
   describe("GET /api/articles/:article_id/comments", () => {
     test("200: responds with array of comment objects of correct length", () => {
