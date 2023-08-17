@@ -3,6 +3,7 @@ const {
   selectCommentsByArticleID,
   insertComment,
   removeComment,
+  alterCommentVotes,
 } = require("../models");
 
 exports.postCommentToArticleID = (req, res, next) => {
@@ -53,4 +54,14 @@ exports.deleteCommentByID = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
+};
+
+exports.patchCommentByID = (req, res, next) => {
+  const { comment_id } = req.params;
+  const { inc_votes } = req.body;
+  alterCommentVotes(comment_id, inc_votes)
+    .then((updatedComment) => {
+      res.status(200).send({ updatedComment });
+    })
+    .catch(next);
 };
