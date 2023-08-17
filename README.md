@@ -40,4 +40,4 @@ They should be formatted as:
 Please ensure that you are running the below versions or higher:
 
 - Node: v20.3.1
-- PSQL: 15.3
+- PSQL: v15.3
