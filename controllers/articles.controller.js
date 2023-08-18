@@ -3,6 +3,7 @@ const {
   selectArticleByID,
   selectArticles,
   alterArticleVotes,
+  insertArticle,
 } = require("../models");
 
 exports.getArticleByID = (req, res, next) => {
@@ -42,4 +43,13 @@ exports.patchArticleByID = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
+};
+
+exports.postArticle = (req, res, next) => {
+  const newArticle = req.body;
+  insertArticle(newArticle)
+    .then(({ rows }) => {
+      res.status(201).send({ postedArticle: rows[0] });
+    })
+    .catch(next);
 };

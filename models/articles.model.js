@@ -1,5 +1,6 @@
 const db = require("../db/connection");
 const { checkTopicExists } = require("../db/seeds/utils");
+const format = require("pg-format");
 
 exports.selectArticleByID = (article_id) => {
   return db
@@ -82,4 +83,28 @@ exports.alterArticleVotes = (articleID, incVotes) => {
         return article;
       }
     });
+};
+
+exports.insertArticle = (newArticle) => {
+  const { author, title, body, topic, article_img_url } = newArticle;
+  const insertQuery = format(
+    `INSERT INTO articles
+  (author, title, body, topic, article_img_url)
+  VALUES %L
+  RETURNING *;`,
+    [[author, title, body, topic, article_img_url]]
+  );
+  return db.query(insertQuery).then(({ rows }) => {
+    const article_id = rows[0].article_id;
+    return db.query(
+      `SELECT articles.article_id, articles.author, articles.title, 
+    articles.topic, articles.created_at, articles.votes, article_img_url,
+    COUNT (comments.comment_id)::INT AS comment_count, articles.body 
+    FROM articles
+    LEFT JOIN comments ON articles.article_id = comments.article_id
+    WHERE articles.article_id = $1
+    GROUP BY articles.article_id;`,
+      [article_id]
+    );
+  });
 };

@@ -3,6 +3,7 @@ const {
   selectArticleByID,
   selectArticles,
   alterArticleVotes,
+  insertArticle,
 } = require("./articles.model");
 const {
   insertComment,
@@ -23,4 +24,5 @@ module.exports = {
   selectUsers,
   selectUserByUsername,
   alterCommentVotes,
+  insertArticle,
 };

@@ -4,6 +4,7 @@ const {
   getArticleByID,
   getArticles,
   patchArticleByID,
+  postArticle,
 } = require("./articles.controller");
 const {
   psqlErrorHandler,
@@ -31,4 +32,5 @@ module.exports = {
   getUsers,
   getUserByUsername,
   patchCommentByID,
+  postArticle,
 };

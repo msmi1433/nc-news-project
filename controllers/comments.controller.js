@@ -47,7 +47,7 @@ exports.deleteCommentByID = (req, res, next) => {
       } else {
         return Promise.reject({
           status: 404,
-          msg: "parameter does not exist",
+          msg: "bad db query",
         });
       }
     })
