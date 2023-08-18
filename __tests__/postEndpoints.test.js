@@ -98,7 +98,7 @@ describe("POST endpoints", () => {
         .send(newComment)
         .expect(404)
         .then(({ body }) => {
-          expect(body.msg).toBe("parameter does not exist");
+          expect(body.msg).toBe("bad db query");
         });
     });
   });
@@ -137,6 +137,68 @@ describe("POST endpoints", () => {
             .then(({ rows }) => {
               expect(rows[0].article_id).toBe(14);
             });
+        });
+    });
+    test("404: Errors if author does not exist", () => {
+      const newArticle = {
+        author: "myles",
+        title: "new article",
+        body: "hello",
+        topic: "paper",
+        article_img_url:
+          "https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg",
+      };
+      return request(app)
+        .post("/api/articles")
+        .send(newArticle)
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("bad db query");
+        });
+    });
+    test("400: errors if posted article is incomplete", () => {
+      const newArticle = {
+        author: "myles",
+        title: "new article",
+        topic: "paper",
+        article_img_url:
+          "https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg",
+      };
+      return request(app)
+        .post("/api/articles")
+        .send(newArticle)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("posted item format is invalid");
+        });
+    });
+    test("201: still creates if article has excess keys, ignoring them", () => {
+      const newArticle = {
+        author: "icellusedkars",
+        naame2: "unnecessary",
+        title: "new article",
+        body: "hello",
+        topic: "paper",
+        article_img_url:
+          "https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg",
+      };
+      return request(app)
+        .post("/api/articles")
+        .send(newArticle)
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.postedArticle).toEqual({
+            article_id: expect.any(Number),
+            article_img_url:
+              "https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg",
+            author: "icellusedkars",
+            body: "hello",
+            comment_count: 0,
+            created_at: expect.any(String),
+            title: "new article",
+            topic: "paper",
+            votes: 0,
+          });
         });
     });
   });

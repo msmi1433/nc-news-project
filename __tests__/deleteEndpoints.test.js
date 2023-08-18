@@ -26,7 +26,7 @@ describe("DELETE endpoints", () => {
         .delete("/api/comments/5000")
         .expect(404)
         .then(({ body }) => {
-          expect(body.msg).toBe("parameter does not exist");
+          expect(body.msg).toBe("bad db query");
         });
     });
     test("400: errors when comment_id is not valid", () => {
