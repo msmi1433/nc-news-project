@@ -102,4 +102,42 @@ describe("POST endpoints", () => {
         });
     });
   });
+
+  describe("POST /api/articles", () => {
+    test("201: adds article to db and returns new article obj to user", () => {
+      const newArticle = {
+        author: "icellusedkars",
+        title: "new article",
+        body: "hello",
+        topic: "paper",
+        article_img_url:
+          "https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg",
+      };
+      return request(app)
+        .post("/api/articles")
+        .send(newArticle)
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.postedArticle).toEqual({
+            author: "icellusedkars",
+            title: "new article",
+            body: "hello",
+            topic: "paper",
+            article_img_url:
+              "https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg",
+            created_at: expect.any(String),
+            votes: 0,
+            article_id: expect.any(Number),
+            comment_count: 0,
+          });
+        })
+        .then(() => {
+          return db
+            .query("SELECT * FROM articles WHERE title = 'new article'")
+            .then(({ rows }) => {
+              expect(rows[0].article_id).toBe(14);
+            });
+        });
+    });
+  });
 });
