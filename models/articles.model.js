@@ -27,7 +27,12 @@ exports.selectArticleByID = (article_id) => {
     });
 };
 
-exports.selectArticles = (topic, sortBy = "created_at", order = "DESC") => {
+exports.selectArticles = (
+  topic,
+  sortBy = "created_at",
+  order = "DESC",
+  limit = 10
+) => {
   if (
     !["article_id", "comment_count", "votes", "created_at"].includes(sortBy)
   ) {
@@ -56,7 +61,8 @@ LEFT JOIN comments ON articles.article_id = comments.article_id`;
     queryArray.push(topic);
   }
 
-  queryString += ` GROUP BY articles.article_id ORDER BY ${sortBy} ${order}`;
+  queryString += ` GROUP BY articles.article_id ORDER BY ${sortBy} ${order}
+  LIMIT ${limit}`;
 
   return db.query(queryString, queryArray).then(({ rows }) => {
     return rows;
