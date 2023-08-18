@@ -47,6 +47,10 @@ exports.patchArticleByID = (req, res, next) => {
 
 exports.postArticle = (req, res, next) => {
   const newArticle = req.body;
+  if (!newArticle.article_img_url) {
+    newArticle.article_img_url =
+      "https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg";
+  }
   insertArticle(newArticle)
     .then(({ rows }) => {
       res.status(201).send({ postedArticle: rows[0] });

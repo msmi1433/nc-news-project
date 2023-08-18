@@ -201,5 +201,23 @@ describe("POST endpoints", () => {
           });
         });
     });
+    test("201: adds default article_img_url if not specified by user", () => {
+      const newArticle = {
+        author: "icellusedkars",
+        naame2: "unnecessary",
+        title: "new article",
+        body: "hello",
+        topic: "paper",
+      };
+      return request(app)
+        .post("/api/articles")
+        .send(newArticle)
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.postedArticle.article_img_url).toBe(
+            "https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg"
+          );
+        });
+    });
   });
 });
