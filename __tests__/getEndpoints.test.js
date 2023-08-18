@@ -332,10 +332,18 @@ describe("GET endpoints", () => {
   });
   test("400: errors when limit is not a number", () => {
     return request(app)
-      .get("/api/articles/limit=DROPTABLES")
+      .get("/api/articles/?limit=DROPTABLES")
       .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("invalid data-type");
+        expect(body.msg).toBe("limit must be a number");
+      });
+  });
+  test("200: accepts a page query", () => {
+    return request(app)
+      .get("/api/articles/?page=2")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.articles.length).toBe(3);
       });
   });
 });

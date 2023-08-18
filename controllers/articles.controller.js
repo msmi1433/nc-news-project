@@ -20,8 +20,9 @@ exports.getArticleByID = (req, res, next) => {
 exports.getArticles = (req, res, next) => {
   const { topic, sort_by, order } = req.query;
   const limit = req.query.limit ? parseInt(req.query.limit) : undefined;
+  const page = req.query.page ? parseInt(req.query.page) : undefined;
 
-  const promises = [selectArticles(topic, sort_by, order, limit)];
+  const promises = [selectArticles(topic, sort_by, order, limit, page)];
 
   if (topic) promises.push(checkTopicExists(topic));
 
