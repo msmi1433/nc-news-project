@@ -101,7 +101,7 @@ describe("GET endpoints", () => {
         .expect(200)
         .then(({ body }) => {
           const { articles } = body;
-          expect(articles.length).toBe(13);
+          expect(articles.length).toBe(10);
         });
     });
     test("200: articles objects have the correct properties", () => {
@@ -141,7 +141,7 @@ describe("GET endpoints", () => {
           .get("/api/articles?topic=mitch")
           .expect(200)
           .then(({ body }) => {
-            expect(body.articles.length).toBe(12);
+            expect(body.articles.length).toBe(10);
             body.articles.forEach((article) => {
               expect(article.topic).toBe("mitch");
             });
@@ -172,7 +172,7 @@ describe("GET endpoints", () => {
           .get("/api/articles?topic=mitch&sort_by=comment_count&order=ASC")
           .expect(200)
           .then(({ body }) => {
-            expect(body.articles.length).toBe(12);
+            expect(body.articles.length).toBe(10);
             expect(body.articles).toBeSortedBy("comment_count", {
               ascending: true,
             });
@@ -310,5 +310,40 @@ describe("GET endpoints", () => {
           expect(body.msg).toBe("username does not exist");
         });
     });
+  });
+
+  describe("GET api/articles pagination", () => {
+    test("400: Accepts a limit query and limits results to specified amount", () => {
+      return request(app)
+        .get("/api/articles?limit=12")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.articles.length).toBe(12);
+        });
+    });
+  });
+  test("400: defaults to 10 when no limit specifed", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.articles.length).toBe(10);
+      });
+  });
+  test("400: errors when limit is not a number", () => {
+    return request(app)
+      .get("/api/articles/?limit=DROPTABLES")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("limit must be a number");
+      });
+  });
+  test("200: accepts a page query", () => {
+    return request(app)
+      .get("/api/articles/?page=2")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.articles.length).toBe(3);
+      });
   });
 });

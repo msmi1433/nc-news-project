@@ -27,7 +27,13 @@ exports.selectArticleByID = (article_id) => {
     });
 };
 
-exports.selectArticles = (topic, sortBy = "created_at", order = "DESC") => {
+exports.selectArticles = (
+  topic,
+  sortBy = "created_at",
+  order = "DESC",
+  limit = 10,
+  page = 1
+) => {
   if (
     !["article_id", "comment_count", "votes", "created_at"].includes(sortBy)
   ) {
@@ -44,6 +50,13 @@ exports.selectArticles = (topic, sortBy = "created_at", order = "DESC") => {
     });
   }
 
+  if (isNaN(limit)) {
+    return Promise.reject({
+      status: 400,
+      msg: "limit must be a number",
+    });
+  }
+
   let queryString = `SELECT articles.article_id, articles.author, articles.title, 
 articles.topic, articles.created_at, articles.votes, article_img_url,
 COUNT (comments.comment_id)::INT AS comment_count
@@ -56,7 +69,8 @@ LEFT JOIN comments ON articles.article_id = comments.article_id`;
     queryArray.push(topic);
   }
 
-  queryString += ` GROUP BY articles.article_id ORDER BY ${sortBy} ${order}`;
+  queryString += ` GROUP BY articles.article_id ORDER BY ${sortBy} ${order}
+  LIMIT ${limit} OFFSET ${(page - 1) * limit}`;
 
   return db.query(queryString, queryArray).then(({ rows }) => {
     return rows;
