@@ -6,7 +6,7 @@ exports.selectArticleByID = (article_id) => {
   return db
     .query(
       `SELECT articles.article_id, articles.title, articles.topic, articles.author,
-    articles.body, articles.created_at, articles.article_img_url, 
+    articles.body, articles.created_at, articles.article_img_url, articles.votes,
     COUNT(comments.comment_id)::INT AS comment_count
     FROM articles 
     LEFT JOIN comments ON articles.article_id = comments.article_id
